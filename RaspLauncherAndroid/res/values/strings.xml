@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Rasp Launcher</string>
+    <string name="username_label">\@</string>
+    <string name="username_hint">Usuário</string>
+    <string name="play">Jogar!</string>
+    <string name="success_message">Parabéns!! Mostrou como se faz! :)</string>
+    <string name="fail_message">Ihhh!! Não foi dessa vez :(</string>
+
+</resources>
