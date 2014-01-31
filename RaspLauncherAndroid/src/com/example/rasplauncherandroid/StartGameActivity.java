@@ -13,6 +13,9 @@ public class StartGameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.start_game);
         
+//        final Twitter twitter = TwitterFactory.getSingleton();
+//        twitter.setOAuthConsumer("", "");
+        
         final EditText startGameUsername = (EditText) findViewById(R.id.start_game_username);
         
         final View startGameButton = findViewById(R.id.start_game_button);

@@ -1,14 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/play_game"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <ImageView
+                android:id="@+id/play_game_arrow_left_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_left_empty" />
+
+            <ImageView
+                android:id="@+id/play_game_arrow_left_full"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_left_full"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="100dp" >
+
+            <ImageView
+                android:id="@+id/play_game_arrow_right_empty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_right_empty" />
+
+            <ImageView
+                android:id="@+id/play_game_arrow_right_full"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/arrow_right_full"
+                android:visibility="invisible" />
+        </RelativeLayout>
+    </LinearLayout>
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="20dp" >
+        android:layout_marginTop="10dp" >
 
         <ImageView
             android:id="@+id/play_game_arrow_empty_1"
@@ -84,24 +131,21 @@
             android:visibility="invisible" />
     </RelativeLayout>
 
-    <RelativeLayout
+    <ImageView
+        android:id="@+id/play_game_circle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="10dp" >
+        android:layout_marginTop="20dp"
+        android:src="@drawable/circle_selector" />
 
-        <ImageView
-            android:id="@+id/play_game_arrow_empty_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/arrow_empty" />
-
-        <ImageView
-            android:id="@+id/play_game_arrow_full_5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/arrow_full"
-            android:visibility="invisible" />
-    </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="10dp"
+        android:layout_weight="1"
+        android:gravity="bottom|center_horizontal"
+        android:text="@string/developer_message"
+        android:textSize="10sp" />
 
 </LinearLayout>

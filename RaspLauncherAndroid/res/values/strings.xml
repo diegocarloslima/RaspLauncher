@@ -7,5 +7,6 @@
     <string name="play">Jogar!</string>
     <string name="success_message">Parabéns!! Mostrou como se faz! :)</string>
     <string name="fail_message">Ihhh!! Não foi dessa vez :(</string>
+    <string name="developer_message">Hackathon de Raspberry Pi e Java do @soujava na #cpbr7</string>
 
 </resources>
