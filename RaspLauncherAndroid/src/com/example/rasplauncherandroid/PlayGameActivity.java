@@ -1,14 +1,13 @@
 package com.example.rasplauncherandroid;
 
 import android.app.Activity;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,14 +16,16 @@ import android.view.ViewConfiguration;
 public class PlayGameActivity extends Activity {
 
 	private View mRootView;
+	
 	private SensorManager mSensorManager;
 	private Sensor mAccelerometer;
+	private float mCurrentX;
+	private SensorWorker mWorker;
+	
 	private int mMaxFlingVelocity;
 	private GestureDetector mGestureDetector;
 	private Runnable mRunnable;
-	private float mCurrentX;
-	private SensorWorker mWorker;
-
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,16 +40,12 @@ public class PlayGameActivity extends Activity {
 
 			@Override
 			public void onSensorChanged(SensorEvent event) {
-				// TODO Auto-generated method stub
 				mCurrentX = event.values[0];
-				//Log.d("TEST", event.values[0] + " " + event.values[1] + " " + event.values[2]);
 			}
 
 			@Override
-			public void onAccuracyChanged(Sensor sensor, int accuracy) {
-				// TODO Auto-generated method stub
-
-			}
+			public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+			
 		}, mAccelerometer, SensorManager.SENSOR_DELAY_NORMAL);
 
 		mMaxFlingVelocity = ViewConfiguration.get(PlayGameActivity.this).getScaledMaximumFlingVelocity();
@@ -61,9 +58,7 @@ public class PlayGameActivity extends Activity {
 			}
 
 			@Override
-			public void onShowPress(MotionEvent e) {
-
-			}
+			public void onShowPress(MotionEvent e) {}
 
 			@Override
 			public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
@@ -71,19 +66,28 @@ public class PlayGameActivity extends Activity {
 			}
 
 			@Override
-			public void onLongPress(MotionEvent e) {
-			}
+			public void onLongPress(MotionEvent e) {}
 
 			@Override
 			public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 				final int arrowNumber = Math.round((4 * -velocityY / mMaxFlingVelocity));
 				drawArrows(arrowNumber);
+				
+				new AsyncTask<Void, Void, Void>() {
+
+					@Override
+					protected Void doInBackground(Void... params) {
+						AndroidClientSocket.getInstance().send("launch:" + arrowNumber);
+						
+						return null;
+					}
+				}.execute();
+				
 				return true;
 			}
 
 			@Override
 			public boolean onDown(MotionEvent e) {
-				// TODO Auto-generated method stub
 				return false;
 			}
 		});
@@ -92,25 +96,6 @@ public class PlayGameActivity extends Activity {
 
 			@Override
 			public void run() {
-				final View emptyArrow1 = findViewById(R.id.play_game_arrow_empty_1);
-				final View emptyArrow2 = findViewById(R.id.play_game_arrow_empty_2);
-				final View emptyArrow3 = findViewById(R.id.play_game_arrow_empty_3);
-				final View emptyArrow4 = findViewById(R.id.play_game_arrow_empty_4);
-
-				emptyArrow1.setVisibility(View.VISIBLE);
-				emptyArrow2.setVisibility(View.VISIBLE);
-				emptyArrow3.setVisibility(View.VISIBLE);
-				emptyArrow4.setVisibility(View.VISIBLE);
-
-				final View fullArrow1 = findViewById(R.id.play_game_arrow_full_1);
-				final View fullArrow2 = findViewById(R.id.play_game_arrow_full_2);
-				final View fullArrow3 = findViewById(R.id.play_game_arrow_full_3);
-				final View fullArrow4 = findViewById(R.id.play_game_arrow_full_4);
-
-				fullArrow1.setVisibility(View.INVISIBLE);
-				fullArrow2.setVisibility(View.INVISIBLE);
-				fullArrow3.setVisibility(View.INVISIBLE);
-				fullArrow4.setVisibility(View.INVISIBLE);
 
 				mRootView.invalidate();
 			}
@@ -118,6 +103,7 @@ public class PlayGameActivity extends Activity {
 
 		mWorker = new SensorWorker();
 		mWorker.start();
+		
 	}
 
 	@Override
@@ -150,8 +136,6 @@ public class PlayGameActivity extends Activity {
 	}
 
 	private void drawArrows(int number) {
-		Log.d("TEST", "da:" + number);
-
 		final View emptyArrow1 = findViewById(R.id.play_game_arrow_empty_1);
 		final View emptyArrow2 = findViewById(R.id.play_game_arrow_empty_2);
 		final View emptyArrow3 = findViewById(R.id.play_game_arrow_empty_3);
@@ -192,7 +176,7 @@ public class PlayGameActivity extends Activity {
 		mRootView.removeCallbacks(mRunnable);
 		mRootView.postDelayed(mRunnable, 1000);
 	}
-
+	
 	private final class SensorWorker extends Thread {
 
 		private boolean quit;
@@ -201,9 +185,8 @@ public class PlayGameActivity extends Activity {
 		@Override
 		public void run() {
 			while(true) {
-
 				final float deltaX = mCurrentX - this.lastX;
-				Log.d("TEST", "deltaX:" + deltaX);
+				AndroidClientSocket.getInstance().send("move:" + deltaX);
 				
 				final View emptyLeftArrow = findViewById(R.id.play_game_arrow_left_empty);
 				final View fullLeftArrow = findViewById(R.id.play_game_arrow_left_full);
@@ -235,9 +218,7 @@ public class PlayGameActivity extends Activity {
 
 				try {
 					Thread.sleep(500);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-				}
+				} catch (InterruptedException e) {}
 
 				if(this.quit) {
 					return;

@@ -16,6 +16,8 @@ public class StartGameActivity extends Activity {
 //        final Twitter twitter = TwitterFactory.getSingleton();
 //        twitter.setOAuthConsumer("", "");
         
+        AndroidClientSocket.getInstance().open();
+        
         final EditText startGameUsername = (EditText) findViewById(R.id.start_game_username);
         
         final View startGameButton = findViewById(R.id.start_game_button);
@@ -27,5 +29,12 @@ public class StartGameActivity extends Activity {
 				startActivity(intent);
 			}
 		});
+    }
+    
+    @Override
+    protected void onDestroy() {
+    	AndroidClientSocket.getInstance().close();
+    	
+    	super.onDestroy();
     }
 }
