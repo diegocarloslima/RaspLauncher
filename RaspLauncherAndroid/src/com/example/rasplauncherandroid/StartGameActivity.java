@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 
 public class StartGameActivity extends Activity {
 
@@ -16,9 +15,9 @@ public class StartGameActivity extends Activity {
 //        final Twitter twitter = TwitterFactory.getSingleton();
 //        twitter.setOAuthConsumer("", "");
         
-        AndroidClientSocket.getInstance().open();
+//        AndroidClientSocket.getInstance().open();
         
-        final EditText startGameUsername = (EditText) findViewById(R.id.start_game_username);
+//        final EditText startGameUsername = (EditText) findViewById(R.id.start_game_username);
         
         final View startGameButton = findViewById(R.id.start_game_button);
         startGameButton.setOnClickListener(new View.OnClickListener() {
@@ -31,10 +30,10 @@ public class StartGameActivity extends Activity {
 		});
     }
     
-    @Override
-    protected void onDestroy() {
-    	AndroidClientSocket.getInstance().close();
-    	
-    	super.onDestroy();
-    }
+//    @Override
+//    protected void onDestroy() {
+//    	AndroidClientSocket.getInstance().close();
+//    	
+//    	super.onDestroy();
+//    }
 }

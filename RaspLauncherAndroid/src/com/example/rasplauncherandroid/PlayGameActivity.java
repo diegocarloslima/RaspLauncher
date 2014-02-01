@@ -8,6 +8,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -77,7 +78,15 @@ public class PlayGameActivity extends Activity {
 
 					@Override
 					protected Void doInBackground(Void... params) {
-						AndroidClientSocket.getInstance().send("launch:" + arrowNumber);
+						NetworkUtils.performRequest(NetworkUtils.BASE_URL + "servoarm/" + "0");
+						try {
+							Thread.sleep(3000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						NetworkUtils.performRequest(NetworkUtils.BASE_URL + "servoarm/" + "100");
+						
 						
 						return null;
 					}
@@ -179,14 +188,31 @@ public class PlayGameActivity extends Activity {
 	
 	private final class SensorWorker extends Thread {
 
+		private int speed = 0;
+		private int direction = 0;
 		private boolean quit;
 		private float lastX;
 
 		@Override
 		public void run() {
 			while(true) {
+				
+				boolean move = false;
+				
 				final float deltaX = mCurrentX - this.lastX;
-				AndroidClientSocket.getInstance().send("move:" + deltaX);
+				if(deltaX > 0 && deltaX > 1.5 && this.direction < 0) {
+					NetworkUtils.performRequest(NetworkUtils.BASE_URL +  "direction/" + "10");
+					move = true;
+				} else if(deltaX < 0 && deltaX < -1.5 && this.direction > 0) {
+					NetworkUtils.performRequest(NetworkUtils.BASE_URL +  "direction/" + "-10");
+					move = true;
+				}
+
+				if(move && this.speed == 0) {
+					NetworkUtils.performRequest(NetworkUtils.BASE_URL +  "speed/" + 14);
+				} else if(!move && this.speed > 0) {
+					NetworkUtils.performRequest(NetworkUtils.BASE_URL +  "speed/" + 0);
+				}
 				
 				final View emptyLeftArrow = findViewById(R.id.play_game_arrow_left_empty);
 				final View fullLeftArrow = findViewById(R.id.play_game_arrow_left_full);
