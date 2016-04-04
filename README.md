@@ -9,11 +9,19 @@ RaspLauncher
 Sobre
 ====
 ![My image](https://pbs.twimg.com/profile_images/428993577482338304/fLxGvicj.png)
+
 Projeto desenvolvido no Hackathon de Raspberry pi e Java, organizado pela equipe do [Sou Java](https://github.com/soujava) na #cpbr7. 
 A idéia é um pequeno lançador (como um pequeno braço robótico) que atira objetos. O controle é feito através de um aplicativo Android.
 
-#2 Place
+#Segundo Lugar
 ===
+
+[diegocarloslima](https://github.com/diegocarloslima)
+
+[ezefranca](https://github.com/ezefranca)
+
+[pondaco](https://github.com/pondaco)
+
 ![Team](https://scontent-grt2-1.xx.fbcdn.net/hphotos-xfa1/v/t1.0-9/1779253_671585119559267_546699929_n.jpg?oh=10c7ccb8d37987a2fc87d8a60ce4c57f&oe=577E604F)
 
 App Screenshoot
